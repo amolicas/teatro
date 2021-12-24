@@ -28,6 +28,7 @@ class ReservasController extends Controller
     {
         $users['users'] = User::all();
         $datos = request()->all();
+        if($datos['fecha']==null) $datos['fecha'] = date('Y-m-d');
         $users['fecha'] = date('d-m-Y', strtotime($datos['fecha']));
         $users['fechaformat'] = date('Y-m-d', strtotime($datos['fecha']));
         $fecha = date('Y-m-d', strtotime($datos['fecha']));
