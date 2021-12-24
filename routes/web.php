@@ -23,9 +23,7 @@ Route::get('/reservas/fecha', function () {
     return view('reservas.fecha');
 });
 
-Route::get('/reservas/consultar', function () {
-    return view('reservas.consultar');
-});
+Route::get('/reservas/consultar', [ReservasController::class, 'consultar']);
 
 Route::resource('reservas', ReservasController::class);
 

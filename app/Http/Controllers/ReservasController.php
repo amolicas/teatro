@@ -80,9 +80,24 @@ class ReservasController extends Controller
     public function show(Reservas $reservas)
     {
         $peticion = request()->all();
-        $reservas['reservas'] =Reservas::where('fecha', '=', $peticion['fecha'])->get();
+        if (($peticion['fecha']) != null && ($peticion['usuario']) != null){
+            $reservas['reservas'] =Reservas::where('fecha', '=', $peticion['fecha'])
+            ->where('usuario_id', '=', $peticion['usuario'])
+            ->get();
+        }elseif ($peticion['fecha']!=null){
+            $reservas['reservas'] =Reservas::where('fecha', '=', $peticion['fecha'])
+            ->get();
+        }elseif ($peticion['usuario']!=null){
+            $reservas['reservas'] =Reservas::where('usuario_id', '=', $peticion['usuario'])
+            ->get();
+        }else{
+            return redirect('reservas')->with('mensaje','No se ha elegido ningun criterio de busqueda');
+        }
+
         foreach($reservas['reservas'] as $reserva){
             $cantbutacas = 0;
+            //$reserva['usuario_nombre'] = User::where('id', '=', $reserva['usuario_id'])[0]->nombre;
+            $reserva['usuario_nombre'] = User::findOrFail($reserva['usuario_id'])->nombre;
             $butacas = Butacas::where('reserva_id', '=', $reserva->id)->get();
             foreach($butacas as $butaca){
                 $cantbutacas++;
@@ -91,6 +106,8 @@ class ReservasController extends Controller
             }
             $reserva['cantidad'] = $cantbutacas;
         }
+        
+        //return response()->json($peticion);
         return view('reservas.show', $reservas);
     }
 
@@ -126,5 +143,11 @@ class ReservasController extends Controller
     public function destroy(Reservas $reservas)
     {
         return view('reservas.destroy');
+    }
+
+    public function consultar(){
+        $datos['fechaformat'] = request()->get('_fechaformat');
+        $datos['users'] = User::all();
+        return view('reservas.consultar', $datos);
     }
 }

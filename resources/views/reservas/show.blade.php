@@ -20,7 +20,6 @@
                 <th>Fecha</th>
                 <th>Cantidad</th>
                 <th>Butacas</th>
-                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -28,18 +27,10 @@
             @foreach($reservas as $reserva)
             <tr>
                 <td>{{ $reserva->id }}</td>
-                <td>{{ $reserva->usuario_id }}</td>
+                <td>{{ $reserva->usuario_nombre }}</td>
                 <td>{{ $reserva->fecha }}</td>
                 <td>{{ $reserva->cantidad }}</td>
                 <td>{{ $reserva->butacas }}</td>
-                <td>
-                    <a href="{{ url('/user/' . $reserva->id . '/edit') }}">Editar</a> | 
-                    <form action="{{ url('/user/' . $reserva->id) }}" method="post">
-                        @csrf
-                        {{ method_field('DELETE') }}
-                        <input type="submit" onclick="return confirm('¿Estas seguro que quieres borrar?')" value="Borrar">
-                    </form>
-                </td>
             </tr>
             @endforeach
         </tbody>
