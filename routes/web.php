@@ -19,6 +19,15 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/reservas/fecha', function () {
+    return view('reservas.fecha');
+});
+
+Route::get('/reservas/consultar', function () {
+    return view('reservas.consultar');
+});
+
 Route::resource('reservas', ReservasController::class);
 
 Route::resource('user', UsersController::class);
+

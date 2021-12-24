@@ -79,7 +79,19 @@ class ReservasController extends Controller
      */
     public function show(Reservas $reservas)
     {
-        return view('reservas.show');
+        $peticion = request()->all();
+        $reservas['reservas'] =Reservas::where('fecha', '=', $peticion['fecha'])->get();
+        foreach($reservas['reservas'] as $reserva){
+            $cantbutacas = 0;
+            $butacas = Butacas::where('reserva_id', '=', $reserva->id)->get();
+            foreach($butacas as $butaca){
+                $cantbutacas++;
+                if ($cantbutacas>1) $reserva['butacas'] .= '-';
+                $reserva['butacas'] .= 'F' . $butaca->fila . 'C' . $butaca->columna;
+            }
+            $reserva['cantidad'] = $cantbutacas;
+        }
+        return view('reservas.show', $reservas);
     }
 
     /**
