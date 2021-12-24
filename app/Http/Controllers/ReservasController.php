@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservas;
+use App\Models\Butacas;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReservasController extends Controller
@@ -24,7 +26,24 @@ class ReservasController extends Controller
      */
     public function create()
     {
-        return view('reservas.create');
+        $users['users'] = User::all();
+        $datos = request()->all();
+        $users['fecha'] = date('d-m-Y', strtotime($datos['fecha']));
+        $users['fechaformat'] = date('Y-m-d', strtotime($datos['fecha']));
+        $fecha = date('Y-m-d', strtotime($datos['fecha']));
+
+        $reservas = Reservas::select(['id'])->where('fecha', '=', $fecha)->get();
+        $butacas = array();
+        foreach ($reservas as $reserva){
+            $butacasreserva = Butacas::where('reserva_id', '=', $reserva['id'])->get();
+            foreach ($butacasreserva as $butacareserva){
+                array_push($butacas, 'F' . $butacareserva['fila'] . 'C' . $butacareserva['columna']);
+            }
+            
+        }
+        $users['butacas'] = $butacas;
+
+        return view('reservas.create', $users);
     }
 
     /**
@@ -35,7 +54,21 @@ class ReservasController extends Controller
      */
     public function store(Request $request)
     {
-        return view('reservas.store');
+        $datosReserva = request()->except("_token");
+
+        $Reserva['usuario_id'] = $datosReserva['usuario'];
+        $Reserva['fecha'] = $datosReserva['fecha'];
+        unset($datosReserva['usuario']);
+        unset($datosReserva['fecha']);
+        $id = Reservas::insertGetId($Reserva);
+        foreach($datosReserva as $butaca){
+            $but['reserva_id'] = $id;
+            $but['fila'] = substr($butaca, 1, 1);
+            $but['columna'] = explode('C', $butaca)[1];
+            Butacas::insert($but);
+        }
+        //return response()->json($but);
+        return redirect('reservas')->with('mensaje', 'Reserva registrada correctamente');
     }
 
     /**
