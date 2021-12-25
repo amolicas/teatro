@@ -136,10 +136,11 @@ class ReservasController extends Controller
      * @param  \App\Models\Reservas  $reservas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Reservas $reservas)
+    public function edit($id)
     {
         //TODO: Editar reservas
-        return view('reservas.edit');
+        $this->destroy($id);
+        return view('reservas.fecha');
     }
 
     /**

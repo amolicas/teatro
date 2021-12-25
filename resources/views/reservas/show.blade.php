@@ -20,7 +20,7 @@
                 <th>Fecha</th>
                 <th>Cantidad</th>
                 <th>Butacas</th>
-                <th>Acciones</th>
+                <th colspan="2" class="text-center">Acciones</th>
             </tr>
         </thead>
 
@@ -32,7 +32,14 @@
                 <td>{{ $reserva->fecha }}</td>
                 <td>{{ $reserva->cantidad }}</td>
                 <td>{{ $reserva->butacas }}</td>
-                <td>
+                <td class="text-center">
+                    <form action="{{ url('/reservas/' . $reserva->id . '/edit') }}" method="get">
+                        @csrf
+                        <input type="hidden" name='fecha' id="fecha" value="{{ $reserva->fecha }}">
+                        <input type="submit" onclick="return confirm('Se borrará la reserva y se abrirá una nueva. ¿Deseas continuar?')" value="Editar">
+                    </form>
+                </td>
+                <td class="text-center">
                     <form action="{{ url('/reservas/' . $reserva->id) }}" method="post">
                         @csrf
                         {{ method_field('DELETE') }}
