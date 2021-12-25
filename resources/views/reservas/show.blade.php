@@ -28,7 +28,7 @@
             @foreach($reservas as $reserva)
             <tr>
                 <td>{{ $reserva->id }}</td>
-                <td>{{ $reserva->usuario_nombre }}</td>
+                <td>{{ $reserva->email }}</td>
                 <td>{{ $reserva->fecha }}</td>
                 <td>{{ $reserva->cantidad }}</td>
                 <td>{{ $reserva->butacas }}</td>

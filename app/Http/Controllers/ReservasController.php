@@ -99,6 +99,7 @@ class ReservasController extends Controller
             $cantbutacas = 0;
             //$reserva['usuario_nombre'] = User::where('id', '=', $reserva['usuario_id'])[0]->nombre;
             $reserva['usuario_nombre'] = User::findOrFail($reserva['usuario_id'])->nombre;
+            $reserva['email'] = User::findOrFail($reserva['usuario_id'])->email;
             $butacas = Butacas::where('reserva_id', '=', $reserva->id)->get();
             foreach($butacas as $butaca){
                 $cantbutacas++;
