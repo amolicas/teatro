@@ -20,6 +20,7 @@
                 <th>Fecha</th>
                 <th>Cantidad</th>
                 <th>Butacas</th>
+                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -31,6 +32,13 @@
                 <td>{{ $reserva->fecha }}</td>
                 <td>{{ $reserva->cantidad }}</td>
                 <td>{{ $reserva->butacas }}</td>
+                <td>
+                    <form action="{{ url('/reservas/' . $reserva->id) }}" method="post">
+                        @csrf
+                        {{ method_field('DELETE') }}
+                        <input type="submit" onclick="return confirm('¿Estas seguro que quieres borrar?')" value="Borrar">
+                    </form>
+                </td>
             </tr>
             @endforeach
         </tbody>

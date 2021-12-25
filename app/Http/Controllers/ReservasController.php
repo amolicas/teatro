@@ -141,9 +141,10 @@ class ReservasController extends Controller
      * @param  \App\Models\Reservas  $reservas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reservas $reservas)
+    public function destroy($id)
     {
-        return view('reservas.destroy');
+        Reservas::destroy($id);
+        return redirect('reservas')->with('mensaje','Reserva borrada correctamente');
     }
 
     public function consultar(){
