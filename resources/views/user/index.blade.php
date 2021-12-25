@@ -19,7 +19,7 @@
                 <th>Nombre</th>
                 <th>Apellidos</th>
                 <th>Email</th>
-                <th>Acciones</th>
+                <th colspan="2" class="text-center">Acciones</th>
             </tr>
         </thead>
 
@@ -30,8 +30,13 @@
                 <td>{{ $user->nombre }}</td>
                 <td>{{ $user->apellidos }}</td>
                 <td>{{ $user->email }}</td>
-                <td>
-                    <a href="{{ url('/user/' . $user->id . '/edit') }}">Editar</a> | 
+                <td class="text-center">
+                    <form action="{{ url('/user/' . $user->id . '/edit') }}" method="get">
+                        @csrf
+                        <input type="submit" value="Editar">
+                    </form>
+                </td>
+                <td class="text-center">
                     <form action="{{ url('/user/' . $user->id) }}" method="post">
                         @csrf
                         {{ method_field('DELETE') }}
